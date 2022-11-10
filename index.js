@@ -36,6 +36,7 @@ function verifyJWT(req, res, next) {
 async function run() {
   try {
     const serviceCollection = client.db("foodota").collection("services");
+    const reviewCollection = client.db("foodota").collection("reviews");
 
     //jwt
     app.post("/jwt", async (req, res) => {
@@ -59,6 +60,12 @@ async function run() {
       const query = { _id: ObjectId(id) };
       const service = await serviceCollection.findOne(query);
       res.send(service);
+    });
+
+    app.post("/reviews", async (req, res) => {
+      const review = req.body;
+      const result = await reviewCollection.insertOne(review);
+      res.send(result);
     });
   } finally {
   }
